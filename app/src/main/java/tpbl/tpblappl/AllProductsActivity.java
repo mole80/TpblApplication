@@ -50,6 +50,9 @@ public class AllProductsActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_products);
 
+        Bundle extras = getIntent().getExtras();
+        UserClass u = getIntent().getParcelableExtra("user");
+
         // Hashmap for ListView
         productsList = new ArrayList<HashMap<String, String>>();
 

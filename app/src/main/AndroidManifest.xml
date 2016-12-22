@@ -21,6 +21,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".Login"
+            android:label="Login">
+        </activity>
         <!-- All Product Activity -->
         <activity
             android:name=".AllProductsActivity"

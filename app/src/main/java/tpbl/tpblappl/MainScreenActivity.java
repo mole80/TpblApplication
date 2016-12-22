@@ -16,6 +16,8 @@ public class MainScreenActivity extends Activity
     Button btnViewProducts;
     Button btnNewProduct;
 
+    public static final int RESULT_Main = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -49,5 +51,8 @@ public class MainScreenActivity extends Activity
                 startActivity(i);
             }
         });
+
+        startActivityForResult(new Intent(MainScreenActivity.this, Login.class), RESULT_Main);
+        String res = "aa";
     }
 }
