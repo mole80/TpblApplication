@@ -1,15 +1,21 @@
 package tpbl.tpblappl;
 
-enum eStatePresencceSortie
+enum eStatePresOuting
 {
     Present,
     Absent,
-    NeSaisPas,
+    NotSure,
 }
 
-public class SortieClass
+public class OutingClass
 {
+    public OutingClass(int id, String name)
+    {
+       Id = id;
+        Name = name;
+    }
+
     int Id;
     String Name;
-    eStatePresencceSortie StatePres;
+    eStatePresOuting StatePres;
 }

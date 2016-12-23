@@ -8,9 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 public class MainScreenActivity extends Activity
 {
     Button btnViewProducts;
@@ -35,7 +32,7 @@ public class MainScreenActivity extends Activity
             public void onClick(View view)
             {
                 // Launching All products Activity
-                Intent i = new Intent(getApplicationContext(), AllProductsActivity.class);
+                Intent i = new Intent(getApplicationContext(), OutingActivity.class);
                 startActivity(i);
             }
         });
@@ -47,7 +44,7 @@ public class MainScreenActivity extends Activity
             public void onClick(View view)
             {
                 // Launching create new product activity
-                Intent i = new Intent(getApplicationContext(), NewProductActivity.class);
+                Intent i = new Intent(getApplicationContext(), NewOutingActivity.class);
                 startActivity(i);
             }
         });

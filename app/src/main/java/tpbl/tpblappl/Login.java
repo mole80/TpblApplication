@@ -143,7 +143,7 @@ public class Login extends Activity
        @Override
        protected void onPostExecute(UserClass s) {
            progressDialog.dismiss();
-           Intent ii = new Intent( getApplicationContext(), AllProductsActivity.class);
+           Intent ii = new Intent( getApplicationContext(), OutingActivity.class);
            ii.putExtra("user", s );
            ii.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
            startActivity(ii);
@@ -166,11 +166,8 @@ public class Login extends Activity
                int success = json.getInt(TAG_RESULT);
 
                if (success == 1) {
-                   // products found
-                   // Getting Array of Products
                    log = json.getJSONArray(TAG_USER);
 
-                   // looping through All Products
                    for (int i = 0; i < log.length(); i++) {
                        JSONObject c = log.getJSONObject(i);
 
@@ -183,13 +180,6 @@ public class Login extends Activity
                    }
                }
                else {
-                   // no products found
-                   // Launch Add New product Activity
-                   //Intent i = new Intent(getApplicationContext(),
-                   //        NewProductActivity.class);
-                   // Closing all previous activities
-                   //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                   //startActivity(i);
                }
            } catch (JSONException e) {
                e.printStackTrace();

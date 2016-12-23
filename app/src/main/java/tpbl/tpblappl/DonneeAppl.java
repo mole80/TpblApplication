@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class DonneeAppl {
 
-    public ArrayList<SortieClass> ListSortie = new ArrayList<>();
+    public ArrayList<OutingClass> ListOuting = new ArrayList<>();
 
     private DonneeAppl()
     {}
 
     private static DonneeAppl INSTANCE = new DonneeAppl();
 
-    public static DonneeAppl getInstance()
+    public static DonneeAppl GetInstance()
     {
         return INSTANCE;
     }

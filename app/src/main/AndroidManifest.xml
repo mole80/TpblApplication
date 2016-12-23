@@ -26,13 +26,13 @@
         </activity>
         <!-- All Product Activity -->
         <activity
-            android:name=".AllProductsActivity"
-            android:label="All Products" >
+            android:name=".OutingActivity"
+            android:label="All Outing" >
         </activity>
 
         <!-- Add Product Activity -->
         <activity
-            android:name=".NewProductActivity"
+            android:name=".NewOutingActivity"
             android:label="Add New Product" >
         </activity>
 
@@ -40,6 +40,11 @@
         <activity
             android:name=".EditProductActivity"
             android:label="Edit Product" >
+        </activity>
+
+        <activity
+            android:name=".EditPresOutingActivity"
+            android:label="Edit Outing Pres" >
         </activity>
 
     </application>
