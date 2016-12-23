@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
-public class NewProductActivity extends Activity {
+public class NewOutingActivity extends Activity {
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -70,7 +70,7 @@ public class NewProductActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(NewProductActivity.this);
+            pDialog = new ProgressDialog(NewOutingActivity.this);
             pDialog.setMessage("Creating Product..");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
