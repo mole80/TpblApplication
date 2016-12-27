@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,13 +44,15 @@ public class  OutingActivity extends ListActivity {
 
     JSONArray _jSonArrayOuting = null;
 
+    private UserClass _user;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_products);
 
         Bundle extras = getIntent().getExtras();
-        UserClass u = getIntent().getParcelableExtra("user");
+        _user = getIntent().getParcelableExtra("user");
 
         // Hashmap for ListView
         _outingsHashList = new ArrayList<HashMap<String, String>>();
@@ -112,8 +115,9 @@ public class  OutingActivity extends ListActivity {
 
         protected String doInBackground(String... args) {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id", Integer.toString(_user.Id) ));
             // getting JSON string from URL
-            JSONObject json = jParser.makeHttpRequest(_urlGetOuting, "GET", params);
+            JSONObject json = jParser.makeHttpRequest(_urlGetOuting, "POST", params);
 
             // Check your log cat for JSON reponse
             Log.d("Load outing: ", json.toString());
@@ -130,8 +134,9 @@ public class  OutingActivity extends ListActivity {
 
                         int id = c.getInt(TAG_ID);
                         String name = c.getString(TAG_NAME);
+                        String pres = c.getString(("P1"));
 
-                        DonneeAppl.GetInstance().ListOuting.add(new OutingClass(id, name));
+                        DonneeAppl.GetInstance().ListOuting.add(new OutingClass(id, name, pres));
                         HashMap<String, String> map = new HashMap<String, String>();
                         map.put(TAG_ID, Integer.toString(id));
                         map.put(TAG_NAME, name);
