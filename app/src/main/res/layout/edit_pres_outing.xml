@@ -1,21 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content" android:layout_height="wrap_content"
-    android:id="@+id/LL_Fond">
 
-    <TextView android:text="Id" android:id="@+id/TV_Id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </TextView>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/LL_Edit">
 
-    <TextView android:text="Title" android:id="@+id/TV_Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </TextView>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:id="@+id/LL_Fond"
+        android:orientation="vertical">
 
-    <Button android:id="@+id/btnValidate"
+        <TextView android:text="Id" android:id="@+id/TV_Id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <TextView android:text="Date" android:id="@+id/TV_Date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <TextView android:text="Title" android:id="@+id/TV_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18pt">
+        </TextView>
+
+        <TextView android:text="Detail" android:id="@+id/TV_TitreInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="14pt">
+        </TextView>
+
+        <TextView android:text="Detail" android:id="@+id/TV_Infos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <TextView android:text="Detail Prive" android:id="@+id/TV_TitreInfoPrive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="14pt">
+        </TextView>
+
+        <TextView android:text="DetailPrive" android:id="@+id/TV_InfosPrive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button android:id="@+id/btnPresent"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Validate"
+            android:text="Present"
             android:layout_weight="1"/>
-</LinearLayout>
+
+        <Button android:id="@+id/btnAbsent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Absent"
+            android:layout_weight="1"/>
+
+        <Button android:id="@+id/btnNotSure"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Ne sait pas"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+</RelativeLayout>

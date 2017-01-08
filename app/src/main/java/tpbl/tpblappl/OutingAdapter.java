@@ -51,9 +51,11 @@ public class OutingAdapter  extends BaseAdapter{
         TextView tv_Id = (TextView)layoutItem.findViewById(R.id.TV_Id);
         TextView tv_Title = (TextView)layoutItem.findViewById(R.id.TV_Title);
         TextView tv_pres = (TextView)layoutItem.findViewById(R.id.TV_Pres);
+        TextView tv_Date = (TextView)layoutItem.findViewById(R.id.TV_Date);
 
         tv_Id.setText( Integer.toString( _listOuting.get(position).Id ) );
-        tv_Title.setText(_listOuting.get(position).Name);
+        tv_Title.setText( _listOuting.get(position).Name );
+        tv_Date.setText( _listOuting.get(position).GetDate() );
 
         if( _listOuting.get(position).StatePres == eStatePresOuting.Absent )
             tv_pres.setText( "Absent" );
@@ -66,7 +68,7 @@ public class OutingAdapter  extends BaseAdapter{
 
         if( _listOuting.get(position).StatePres == eStatePresOuting.Absent )
             layoutItem.setBackgroundColor(Color.MAGENTA);
-        else if( _listOuting.get(position).StatePres == eStatePresOuting.Absent )
+        else if( _listOuting.get(position).StatePres == eStatePresOuting.Present )
             layoutItem.setBackgroundColor(Color.GREEN);
         else if( _listOuting.get(position).StatePres == eStatePresOuting.NotSure )
             layoutItem.setBackgroundColor(Color.YELLOW);
