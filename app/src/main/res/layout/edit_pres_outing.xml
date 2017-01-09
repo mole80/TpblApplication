@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/LL_Edit">
@@ -12,43 +13,62 @@
 
         <TextView android:text="Id" android:id="@+id/TV_Id"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </TextView>
-
-        <TextView android:text="Date" android:id="@+id/TV_Date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            tools:visibility="gone">
         </TextView>
 
         <TextView android:text="Title" android:id="@+id/TV_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18pt">
+            android:textSize="30sp"
+            android:textStyle="normal|bold">
         </TextView>
 
-        <TextView android:text="Detail" android:id="@+id/TV_TitreInfo"
+        <TextView android:text="Date" android:id="@+id/TV_Date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp">
+        </TextView>
+
+        <TextView android:text="Infos" android:id="@+id/TV_TitreInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textSize="14pt">
+            android:textSize="24sp"
+            android:textStyle="normal|bold|italic">
         </TextView>
 
         <TextView android:text="Detail" android:id="@+id/TV_Infos"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:textSize="14sp">
         </TextView>
 
-        <TextView android:text="Detail Prive" android:id="@+id/TV_TitreInfoPrive"
+        <TextView android:text="Infos privées" android:id="@+id/TV_TitreInfoPrive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textSize="14pt">
+            android:textSize="24sp"
+            android:textStyle="normal|bold|italic">
         </TextView>
 
         <TextView android:text="DetailPrive" android:id="@+id/TV_InfosPrive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </TextView>
+
+        <TextView android:text="Calendrier" android:id="@+id/TV_TitreCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="24sp"
+            android:textStyle="normal|bold|italic">
+        </TextView>
+
+        <ListView android:id="@+id/LV_Events"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
     </LinearLayout>
 
     <LinearLayout
