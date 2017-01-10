@@ -4,17 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/LL_Edit">
+    android:id="@+id/LL_Edit"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp">
+
+
+    <LinearLayout
+        android:id="@+id/LL_Buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button android:id="@+id/btnPresent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Present"
+            android:layout_weight="1"/>
+
+        <Button android:id="@+id/btnAbsent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Absent"
+            android:layout_weight="1"/>
+
+        <Button android:id="@+id/btnNotSure"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Ne sait pas"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/LL_Fond"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_above="@id/LL_Buttons">
 
         <TextView android:text="Id" android:id="@+id/TV_Id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:visibility="gone">
+            android:visibility="gone">
         </TextView>
 
         <TextView android:text="Title" android:id="@+id/TV_Title"
@@ -67,32 +97,8 @@
 
         <ListView android:id="@+id/LV_Events"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
         </ListView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <Button android:id="@+id/btnPresent"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Present"
-            android:layout_weight="1"/>
-
-        <Button android:id="@+id/btnAbsent"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Absent"
-            android:layout_weight="1"/>
-
-        <Button android:id="@+id/btnNotSure"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Ne sait pas"
-            android:layout_weight="1"/>
     </LinearLayout>
 
 </RelativeLayout>

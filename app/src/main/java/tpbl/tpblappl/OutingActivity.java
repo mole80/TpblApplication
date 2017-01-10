@@ -70,8 +70,8 @@ public class  OutingActivity extends ListActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // getting values from selected ListItem
-                String oid = ((TextView) view.findViewById(R.id.TV_Id)).getText()
-                        .toString();
+                /*String oid = ((TextView) view.findViewById(R.id.TV_Id)).getText()
+                        .toString();*/
 
                 // Starting new intent
                 Intent in = new Intent(getApplicationContext(),
@@ -79,6 +79,7 @@ public class  OutingActivity extends ListActivity {
                 // sending pid to next activity
                 in.putExtra("Pos", position);
                 in.putExtra("userId", _user.Id);
+                in.putExtra("user", _user);
 
                 // starting new activity and expecting some response back
                 startActivityForResult(in, 100);
@@ -115,6 +116,7 @@ public class  OutingActivity extends ListActivity {
         protected String doInBackground(String... args) {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("id", Integer.toString(_user.Id) ));
+            params.add(new BasicNameValuePair("token", _user.Token ));
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(_urlGetOuting, "POST", params);
 
@@ -140,6 +142,8 @@ public class  OutingActivity extends ListActivity {
                         outing.SetDate( c.getString("Date") );
                         outing.Infos = c.getString("Detail");
                         outing.InfosPrive = c.getString("DetailPrive");
+                        outing.SetType( c.getString("TypeSortie") );
+                        outing.SetState( c.getString("Etat") );
 
                         DonneeAppl.GetInstance().ListOuting.add( outing );
                         HashMap<String, String> map = new HashMap<String, String>();
@@ -148,11 +152,12 @@ public class  OutingActivity extends ListActivity {
                         _outingsHashList.add(map);
                     }
                 } else {
-                    Intent i = new Intent(getApplicationContext(),
-                            NewOutingActivity.class);
-                    // Closing all previous activities
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
+                    finish();
+//                    Intent i = new Intent(getApplicationContext(),
+//                            NewOutingActivity.class);
+//                    // Closing all previous activities
+//                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(i);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

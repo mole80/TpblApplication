@@ -1,5 +1,8 @@
 package tpbl.tpblappl;
 
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
@@ -8,7 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
-
+import android.view.Menu;
+import android.view.MenuItem;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -54,7 +58,7 @@ public class Login extends Activity
     private  static  final String TAG_USER = "user";
     private  static  final String TAG_ID = "Id";
 
-    UserClass u = new UserClass("", -1);
+    UserClass u = null;
 
     JSONArray log = null;
 
@@ -64,11 +68,14 @@ public class Login extends Activity
 
     private EditText PassEditText;
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings, menu);
+        return true;
+    }
+
     public void onCreate(Bundle savedInstanceState)
     {
-        u.Name = "";
-        u.Id = -1;
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
@@ -175,8 +182,7 @@ public class Login extends Activity
                        Integer id = c.getInt(TAG_ID);
                        String name = c.getString(TAG_NOM);
 
-                       u.Name = name;
-                       u.Id = id;
+                       u = new UserClass( name, id );
                    }
                }
                else {
@@ -184,7 +190,6 @@ public class Login extends Activity
            } catch (JSONException e) {
                e.printStackTrace();
            }
-
            return u;
        }
    }

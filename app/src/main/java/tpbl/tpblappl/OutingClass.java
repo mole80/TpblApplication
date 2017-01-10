@@ -6,6 +6,21 @@ import android.text.format.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.StringTokenizer;
+
+enum eState
+{
+    Edition,
+    Validate,
+    Cancel,
+    Others
+}
+
+enum eTypeOfOuting
+{
+    Official,
+    NonOfficial
+}
 
 enum eStatePresOuting
 {
@@ -65,6 +80,35 @@ public class OutingClass
        return  DateFormat.format("dd-MM-yyyy", OutingDate).toString();
     }
 
+    public void SetType(String value)
+    {
+        if( value.equals("Off") )
+            Type = eTypeOfOuting.Official;
+        else
+            Type = eTypeOfOuting.NonOfficial;
+    }
+
+    public Boolean IsOfficial()
+    {
+        if( Type == eTypeOfOuting.Official )
+            return true;
+        else
+            return false;
+    }
+
+    public void SetState(String state)
+    {
+        if( state.equals("1") )
+            State = eState.Edition;
+        else if( state.equals("101") || state.equals("201") )
+            State = eState.Validate;
+        else if( state.equals("102") )
+            State = eState.Cancel;
+        else
+            State = eState.Others;
+    }
+
+
     String InfosPrive;
     Date OutingDate;
     String Infos;
@@ -72,4 +116,6 @@ public class OutingClass
     int Id;
     String Name;
     eStatePresOuting StatePres;
+    eTypeOfOuting Type;
+    eState State;
 }

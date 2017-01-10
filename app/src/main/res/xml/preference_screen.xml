@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:title="Calendrier"
+        android:summary="Selection du calendrier à utiliser pour sauver les sorties"
+        android:key="defaultCalendar"
+        android:defaultValue="-1"
+        android:entries="@array/listCalendar"
+        android:entryValues="@array/listIdCalendar"/>
+
+</PreferenceScreen>

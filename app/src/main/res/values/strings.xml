@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TpblAppl</string>
+    <string name="outing_title"><u>Titre</u></string>
 </resources>

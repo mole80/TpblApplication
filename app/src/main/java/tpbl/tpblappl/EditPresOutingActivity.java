@@ -23,6 +23,7 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,6 +70,7 @@ public class EditPresOutingActivity extends Activity{
     private static String _urlUpdateOuting = "http://www.tpbl.ch/service/RepSortieAppl.php";
 
     int _userId;
+    UserClass _user;
     OutingClass _outing;
 
     CalendarClass _calendars[];
@@ -137,10 +139,11 @@ public class EditPresOutingActivity extends Activity{
     }
 
 
-    void GetCalendars(){
+    int GetIdDefaultCalendars(){
         String[] proj = new String[]{
                 CalendarContract.Calendars._ID,
                 CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
+                CalendarContract.Calendars.IS_PRIMARY
                 };
 
         Uri uriCal = CalendarContract.Calendars.CONTENT_URI;
@@ -153,10 +156,11 @@ public class EditPresOutingActivity extends Activity{
 
             if (cur.moveToFirst()) {
 
-                _calendars = new CalendarClass[cur.getCount()];
+//                _calendars = new CalendarClass[cur.getCount()];
 
                 String l_calName;
                 String l_calId;
+                String is_p;
 
                 int l_cnt = 0;
                 int l_nameCol = cur.getColumnIndex(proj[1]);
@@ -165,7 +169,12 @@ public class EditPresOutingActivity extends Activity{
                 do {
                     l_calName = cur.getString(l_nameCol);
                     l_calId = cur.getString(l_idCol);
-                    _calendars[l_cnt] = new CalendarClass(l_calName, l_calId);
+                    is_p = cur.getString( 2 );
+
+//                    _calendars[l_cnt] = new CalendarClass(l_calName, l_calId);
+                    if( is_p.equals("isPrimary") )
+                        return Integer.parseInt(l_calId);
+
                     ++l_cnt;
                 } while (cur.moveToNext());
 
@@ -175,6 +184,8 @@ public class EditPresOutingActivity extends Activity{
         {
             String mess = e.getMessage();
         }
+
+        return 0;
     }
 
     @Override
@@ -185,11 +196,12 @@ public class EditPresOutingActivity extends Activity{
 
         int posList = getIntent().getIntExtra("Pos", 0);
         _userId = getIntent().getIntExtra("userId", -1);
+        _user = getIntent().getParcelableExtra("user");
 
         _outing = DonneeAppl.GetInstance().ListOuting.get(posList);
 
         String[] arrayOutings = GetEvents(_outing.OutingDate);
-        //GetCalendars();
+        int defaultId = GetIdDefaultCalendars();
 
         TextView tv_Id = (TextView) findViewById(R.id.TV_Id);
         TextView tv_Title = (TextView) findViewById(R.id.TV_Title);
@@ -222,6 +234,16 @@ public class EditPresOutingActivity extends Activity{
         Button btnPres = (Button)findViewById(R.id.btnPresent);
         Button btnAbsent = (Button)findViewById(R.id.btnAbsent);
         Button btnNotSure = (Button)findViewById(R.id.btnNotSure);
+
+        if( _outing.State != eState.Edition )
+        {
+            btnNotSure.setVisibility( View.GONE );
+            if ( _outing.StatePres != eStatePresOuting.NoAnswer )
+            {
+                btnAbsent.setVisibility(View.GONE);
+                btnPres.setVisibility(View.GONE);
+            }
+        }
 
         btnPres.setOnClickListener(new View.OnClickListener()
         {
@@ -265,9 +287,10 @@ public class EditPresOutingActivity extends Activity{
 
         protected String doInBackground(String... args) {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("IdP", Integer.toString( _userId ) ));
+            params.add(new BasicNameValuePair("IdP", Integer.toString( _user.Id) ));
             params.add(new BasicNameValuePair("IdS", Integer.toString( _outing.Id ) ));
             params.add(new BasicNameValuePair("Pres",  _outing.GetPresForSite() ));
+            params.add(new BasicNameValuePair("Token",  _user.Token ));
 
             JSONObject json = jParser.makeHttpRequest(_urlUpdateOuting, "POST", params);
 

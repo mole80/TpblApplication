@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class OutingAdapter  extends BaseAdapter{
@@ -41,6 +42,8 @@ public class OutingAdapter  extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent){
         LinearLayout layoutItem;
 
+        OutingClass out = _listOuting.get(position);
+
         if( convertView == null ){
             layoutItem = (LinearLayout)_inflater.inflate(R.layout.outing_layout, parent, false);
         }
@@ -48,14 +51,42 @@ public class OutingAdapter  extends BaseAdapter{
             layoutItem = (LinearLayout) convertView;
         }
 
-        TextView tv_Id = (TextView)layoutItem.findViewById(R.id.TV_Id);
+        RelativeLayout rl_outing = (RelativeLayout) layoutItem.findViewById(R.id.RL_outing);
+
         TextView tv_Title = (TextView)layoutItem.findViewById(R.id.TV_Title);
         TextView tv_pres = (TextView)layoutItem.findViewById(R.id.TV_Pres);
         TextView tv_Date = (TextView)layoutItem.findViewById(R.id.TV_Date);
 
-        tv_Id.setText( Integer.toString( _listOuting.get(position).Id ) );
-        tv_Title.setText( _listOuting.get(position).Name );
+        //tv_Id.setText( Integer.toString( _listOuting.get(position).Id ) );
+
+        String name = "";
+        if( out.Type != eTypeOfOuting.Official ) {
+            name += "P - ";
+//            rl_outing.setBackgroundColor( Color.);
+        }
+
+        name += out.Name;
+
+        tv_Title.setText( name );
         tv_Date.setText( _listOuting.get(position).GetDate() );
+
+
+        TextView tv_state = (TextView)layoutItem.findViewById(R.id.TV_stateOuting);
+        if ( out.State == eState.Edition )
+        {
+            tv_state.setText("Sondage");
+            tv_state.setTextColor(Color.YELLOW);
+        }
+        else if ( out.State == eState.Validate )
+        {
+            tv_state.setText("Valider");
+            tv_state.setTextColor(Color.GREEN);
+        }
+        else if ( out.State == eState.Cancel )
+        {
+            tv_state.setText("Annulée");
+            tv_state.setTextColor(Color.RED);
+        }
 
         if( _listOuting.get(position).StatePres == eStatePresOuting.Absent )
             tv_pres.setText( "Absent" );
@@ -66,14 +97,16 @@ public class OutingAdapter  extends BaseAdapter{
         else
             tv_pres.setText( "----" );
 
+        tv_pres.setTextColor(Color.BLACK);
+
         if( _listOuting.get(position).StatePres == eStatePresOuting.Absent )
-            layoutItem.setBackgroundColor(Color.MAGENTA);
+            tv_pres.setBackgroundColor(Color.RED);
         else if( _listOuting.get(position).StatePres == eStatePresOuting.Present )
-            layoutItem.setBackgroundColor(Color.GREEN);
+            tv_pres.setBackgroundColor(Color.GREEN);
         else if( _listOuting.get(position).StatePres == eStatePresOuting.NotSure )
-            layoutItem.setBackgroundColor(Color.YELLOW);
+            tv_pres.setBackgroundColor(Color.YELLOW);
         else
-            layoutItem.setBackgroundColor(Color.WHITE);
+            tv_pres.setBackgroundColor(Color.WHITE);
 
         return layoutItem;
     }
