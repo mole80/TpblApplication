@@ -48,6 +48,8 @@ import android.widget.EditText;
 
 public class Login extends Activity
 {
+    public final static String OLD_USER_NAME = "Old username";
+
     JSONParser jParser = new JSONParser();
 
     // Lien vers votre page php sur votre serveur
@@ -68,10 +70,24 @@ public class Login extends Activity
 
     private EditText PassEditText;
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings, menu);
         return true;
+    }*/
+
+    void SetOldUser(String name)
+    {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(OLD_USER_NAME, name);
+        editor.commit();
+    }
+
+    String GetOldUsername()
+    {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+       return pref.getString(OLD_USER_NAME, "");
     }
 
     public void onCreate(Bundle savedInstanceState)
@@ -90,6 +106,8 @@ public class Login extends Activity
         PassEditText = (EditText) findViewById(R.id.password);
         Button button = (Button) findViewById(R.id.okbutton);
 
+        UserEditText.setText( GetOldUsername() );
+
         // Définition du listener du bouton
         button.setOnClickListener(new View.OnClickListener()
         {
@@ -103,6 +121,9 @@ public class Login extends Activity
                     progressDialog.show();
                     String user = UserEditText.getText().toString();
                     String pass = PassEditText.getText().toString();
+
+                    SetOldUser(user);
+
                     // On appelle la fonction doLogin qui va communiquer avec le PHP
                     new CheckLogin().execute(user,pass);
                     String s = user;

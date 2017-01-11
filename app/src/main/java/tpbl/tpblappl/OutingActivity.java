@@ -144,6 +144,7 @@ public class  OutingActivity extends ListActivity {
                         outing.InfosPrive = c.getString("DetailPrive");
                         outing.SetType( c.getString("TypeSortie") );
                         outing.SetState( c.getString("Etat") );
+                        outing.Location = c.getString("Lieu");
 
                         DonneeAppl.GetInstance().ListOuting.add( outing );
                         HashMap<String, String> map = new HashMap<String, String>();

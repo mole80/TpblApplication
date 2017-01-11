@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -56,13 +57,17 @@ public class OutingAdapter  extends BaseAdapter{
         TextView tv_Title = (TextView)layoutItem.findViewById(R.id.TV_Title);
         TextView tv_pres = (TextView)layoutItem.findViewById(R.id.TV_Pres);
         TextView tv_Date = (TextView)layoutItem.findViewById(R.id.TV_Date);
+        TextView tv_Location = (TextView)layoutItem.findViewById(R.id.TV_Location);
 
         //tv_Id.setText( Integer.toString( _listOuting.get(position).Id ) );
+
+        tv_Location.setText( out.Location );
 
         String name = "";
         if( out.Type != eTypeOfOuting.Official ) {
             name += "P - ";
-//            rl_outing.setBackgroundColor( Color.);
+            //int colInt = ContextCompat.getColor(_context, R.color.ColorPrivOuting);
+            //rl_outing.setBackgroundColor ( colInt );
         }
 
         name += out.Name;

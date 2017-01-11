@@ -109,6 +109,7 @@ public class OutingClass
     }
 
 
+    String Location;
     String InfosPrive;
     Date OutingDate;
     String Infos;
