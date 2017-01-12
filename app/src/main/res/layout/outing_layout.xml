@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:id="@+id/RL_outing"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginRight="8dp">
 
         <TextView android:text="Pres" android:id="@+id/TV_Pres"
@@ -24,10 +24,12 @@
         </TextView>
 
         <LinearLayout
+            android:id="@+id/LL_outingList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_toStartOf="@id/TV_Pres">
+            android:layout_toStartOf="@id/TV_Pres"
+            android:paddingLeft="5dp">
 
             <LinearLayout
                 android:layout_width="fill_parent"

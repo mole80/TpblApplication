@@ -45,14 +45,18 @@ public class OutingAdapter  extends BaseAdapter{
 
         OutingClass out = _listOuting.get(position);
 
-        if( convertView == null ){
+        // TODO : Check if ok with memory
+        // Is use to refresh layout for each item to set the background color
+        layoutItem = (LinearLayout)_inflater.inflate(R.layout.outing_layout, parent, false);
+        /*if( convertView == null ){
             layoutItem = (LinearLayout)_inflater.inflate(R.layout.outing_layout, parent, false);
         }
         else {
             layoutItem = (LinearLayout) convertView;
-        }
+        }*/
 
         RelativeLayout rl_outing = (RelativeLayout) layoutItem.findViewById(R.id.RL_outing);
+        LinearLayout ll_outing = (LinearLayout) layoutItem.findViewById(R.id.LL_outingList);
 
         TextView tv_Title = (TextView)layoutItem.findViewById(R.id.TV_Title);
         TextView tv_pres = (TextView)layoutItem.findViewById(R.id.TV_Pres);
@@ -66,8 +70,10 @@ public class OutingAdapter  extends BaseAdapter{
         String name = "";
         if( out.Type != eTypeOfOuting.Official ) {
             name += "P - ";
-            //int colInt = ContextCompat.getColor(_context, R.color.ColorPrivOuting);
+            int colInt = ContextCompat.getColor(_context, R.color.ColorPrivOuting);
+            rl_outing.setBackgroundResource( R.color.ColorPrivOuting );
             //rl_outing.setBackgroundColor ( colInt );
+            //ll_outing.setBackgroundColor( colInt );
         }
 
         name += out.Name;

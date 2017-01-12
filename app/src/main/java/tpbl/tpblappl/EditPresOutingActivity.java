@@ -110,6 +110,7 @@ public class EditPresOutingActivity extends Activity{
     String[] GetEvents(Date date ){
 
         String[] outings = null;
+        List<String> listOut = new ArrayList<String>();
 
         try {
             String[] proj = new String[]{
@@ -121,12 +122,8 @@ public class EditPresOutingActivity extends Activity{
 
             Calendar begin = Calendar.getInstance();
             begin.setTime(date);
-            begin.set(Calendar.HOUR_OF_DAY, 0);
-            Calendar end = Calendar.getInstance();
-            end.setTime(date);
-            end.set(Calendar.HOUR_OF_DAY, 23);
             long beginMili = begin.getTimeInMillis();
-            long endMili = end.getTimeInMillis();
+            long endMili = beginMili + (23 * 60 * 60 * 1000);
 
             Cursor cur = null;
             ContentResolver cr = getContentResolver();
@@ -141,7 +138,6 @@ public class EditPresOutingActivity extends Activity{
 
             cur = cr.query(builder.build(), proj, null, null, null);
 
-            outings = new String[cur.getCount()];
             int cpt = 0;
 
             while (cur.moveToNext()) {
@@ -154,18 +150,30 @@ public class EditPresOutingActivity extends Activity{
                 beginVal = cur.getLong(1);
                 long endVal = cur.getLong(3);
 
+                Calendar ca = Calendar.getInstance();
+                ca.setTimeInMillis(endVal);
+
+                TimeZone tz = TimeZone.getDefault();
+                long off = tz.getOffset(endVal);
+                long cor1 = endVal - off - 1000;
+                ca.setTimeInMillis(cor1);
+
+                int day2 = ca.get(Calendar.DAY_OF_MONTH);
+
                 Calendar caS = Calendar.getInstance();
                 caS.setTimeInMillis(beginVal);
                 int dayS = caS.get(Calendar.DAY_OF_MONTH);
 
-                Calendar ca = Calendar.getInstance();
-                ca.setTimeInMillis(endVal);
-                int day = ca.get(Calendar.DAY_OF_MONTH);
-                int hour = ca.get(Calendar.HOUR_OF_DAY);
+                if( day2 == begin.get( Calendar.DAY_OF_MONTH) || dayS == begin.get( Calendar.DAY_OF_MONTH) )
+                    listOut.add(title);
 
-                outings[cpt] = title;
                 cpt++;
             }
+
+            outings = new String[ listOut.size() ];
+            for( int k=0; k< listOut.size(); k++ )
+                outings[k] = listOut.get(k);
+
         }
         catch (Exception ex )
         {
@@ -399,6 +407,13 @@ public class EditPresOutingActivity extends Activity{
         String[] arrayOutings = GetEvents(_outing.OutingDate);
 
         TextView tv_Id = (TextView) findViewById(R.id.TV_Id);
+
+        String name = "";
+        if( !_outing.IsOfficial() )
+            name += "Prive - ";
+
+        name += _outing.Name;
+
         TextView tv_Title = (TextView) findViewById(R.id.TV_Title);
 
         TextView tv_Date = (TextView) findViewById(R.id.TV_Date);
@@ -406,10 +421,18 @@ public class EditPresOutingActivity extends Activity{
         TextView tv_InfosPrivee = (TextView) findViewById(R.id.TV_InfosPrive);
 
         tv_Id.setText( Integer.toString( _outing.Id ) );
-        tv_Title.setText( _outing.Name );
+        tv_Title.setText( name );
         tv_Date.setText( _outing.GetDate() );
-        tv_Infos.setText( _outing.Infos );
-        tv_InfosPrivee.setText( _outing.InfosPrive );
+
+        if( _outing.Infos.equals("") )
+            tv_Infos.setText("---");
+        else
+            tv_Infos.setText( _outing.Infos );
+
+        if( _outing.InfosPrive.equals("") )
+            tv_InfosPrivee.setText("---");
+        else
+            tv_InfosPrivee.setText( _outing.InfosPrive );
 
         ListView lv_events = (ListView) findViewById( R.id.LV_Events );
         List<String> list_outing = new ArrayList<String>();

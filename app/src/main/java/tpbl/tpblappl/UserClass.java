@@ -47,7 +47,7 @@ public class UserClass implements Parcelable {
         Token = ConvertMd5(Name + "tutu123" + Integer.toString(Id) );
     }
 
-    String ConvertMd5(String pass) {
+    public static String ConvertMd5(String pass) {
         String password = null;
         MessageDigest mdEnc;
         try {

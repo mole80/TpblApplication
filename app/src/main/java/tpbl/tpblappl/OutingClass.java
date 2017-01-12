@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 enum eState
 {
@@ -52,10 +53,12 @@ public class OutingClass
     public void SetDate(String date)
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd");
+
         OutingDate = new Date();
 
         try {
             OutingDate = dateFormat.parse(date);
+            //OutingDate.setHours(0);
         } catch (ParseException e) {
             e.printStackTrace();
         }

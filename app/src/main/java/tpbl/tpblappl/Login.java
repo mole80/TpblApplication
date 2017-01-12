@@ -1,6 +1,7 @@
 package tpbl.tpblappl;
 
 import android.content.SharedPreferences;
+import android.icu.text.TimeZoneFormat;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import java.io.IOException;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import javax.xml.parsers.ParserConfigurationException;
@@ -62,6 +65,10 @@ public class Login extends Activity
 
     UserClass u = null;
 
+    //TODO : Faire mieux pour gèrer les paramètres de login
+    String _user;
+    String _pass;
+
     JSONArray log = null;
 
     public ProgressDialog progressDialog;
@@ -95,6 +102,8 @@ public class Login extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+1"));
+
         // initialisation d'une progress bar
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait...");
@@ -121,6 +130,9 @@ public class Login extends Activity
                     progressDialog.show();
                     String user = UserEditText.getText().toString();
                     String pass = PassEditText.getText().toString();
+
+                    _user = user;
+                    _pass = UserClass.ConvertMd5(pass);
 
                     SetOldUser(user);
 
@@ -171,18 +183,26 @@ public class Login extends Activity
        @Override
        protected void onPostExecute(UserClass s) {
            progressDialog.dismiss();
-           Intent ii = new Intent( getApplicationContext(), OutingActivity.class);
-           ii.putExtra("user", s );
-           ii.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-           startActivity(ii);
+
+           if( s != null ) {
+               Intent ii = new Intent(getApplicationContext(), OutingActivity.class);
+               ii.putExtra("user", s);
+               ii.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+               startActivity(ii);
+           }
+           else
+               createDialog("Error", "Contrôler le mot de passe et le nom");
        }
 
        @Override
        protected UserClass doInBackground(String... strings) {
            // Building Parameters
+
+           u = null;
+
            List<NameValuePair> params = new ArrayList<NameValuePair>();
-           params.add(new BasicNameValuePair("user", "tmaulaz"));
-           params.add(new BasicNameValuePair("pass", " "));
+           params.add(new BasicNameValuePair("user", _user ));
+           params.add(new BasicNameValuePair("pass", _pass ));
            // getting JSON string from URL
            JSONObject json = jParser.makeHttpRequest(LOGIN_URL, "POST", params);
 
@@ -207,10 +227,12 @@ public class Login extends Activity
                    }
                }
                else {
+                   return null;
                }
            } catch (JSONException e) {
                e.printStackTrace();
            }
+
            return u;
        }
    }
