@@ -14,6 +14,7 @@ public class UserClass implements Parcelable {
     String Token;
     int Id;
     String Name;
+    String FirebaseToken;
 
     public static final android.os.Parcelable.Creator<UserClass>CREATOR=new Parcelable.Creator<UserClass>(){
         @Override
@@ -29,6 +30,7 @@ public class UserClass implements Parcelable {
 
     public UserClass(Parcel in)
         {
+            FirebaseToken = in.readString();
             Name = in.readString();
             Id = in.readInt();
             CreateToken();
@@ -73,5 +75,6 @@ public class UserClass implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(Name);
         parcel.writeInt(Id);
+        parcel.writeString(FirebaseToken);
     }
 }

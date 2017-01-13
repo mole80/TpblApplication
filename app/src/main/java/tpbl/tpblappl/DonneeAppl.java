@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class DonneeAppl {
 
     public ArrayList<OutingClass> ListOuting = new ArrayList<>();
+    public UserClass CurrentUser = null;
 
     private DonneeAppl()
     {}
