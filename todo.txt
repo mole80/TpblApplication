@@ -1,0 +1,3 @@
+Clean code and delete unused files
+Add push notification
+Improve login system (not realy secure)
