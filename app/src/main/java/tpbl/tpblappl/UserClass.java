@@ -30,9 +30,9 @@ public class UserClass implements Parcelable {
 
     public UserClass(Parcel in)
         {
-            FirebaseToken = in.readString();
             Name = in.readString();
             Id = in.readInt();
+            FirebaseToken = in.readString();
             CreateToken();
         }
 

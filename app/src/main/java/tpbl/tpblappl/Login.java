@@ -51,7 +51,6 @@ import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
-
 public class Login extends Activity
 {
     public final static String OLD_USER_NAME = "Old username";
@@ -72,8 +71,6 @@ public class Login extends Activity
 
     UserClass u = null;
     JSONArray log = null;
-
-    String _tokenFire;
 
     public ProgressDialog progressDialog;
 
@@ -101,24 +98,39 @@ public class Login extends Activity
        return pref.getString(OLD_USER_NAME, "");
     }
 
+    void GetToken()
+    {
+        try
+        {
+            String tok = FirebaseInstanceId.getInstance().getToken();
+            UserClass cu = DonneeAppl.GetInstance().CurrentUser;
+
+            cu.FirebaseToken = tok;
+
+           List<NameValuePair> params = new ArrayList<NameValuePair>();
+           params.add(new BasicNameValuePair("id", Integer.toString( cu.Id ) ));
+           params.add(new BasicNameValuePair("tokenFirebase", cu.FirebaseToken ));
+           params.add(new BasicNameValuePair("token", cu.Token ));
+
+           JSONObject json = jParser.makeHttpRequest("http://www.tpbl.ch/service/token.php", "POST", params);
+
+           if( json != null )
+                Log.d("Token : ", json.toString());
+
+//           int success = json.getInt("result");
+        }
+        catch (Exception ex)
+        {
+            String s = ex.getMessage();
+        }
+    }
+
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+1"));
-
-        try
-        {
-            _tokenFire = FirebaseInstanceId.getInstance().getToken();
-            UpdateToken.execute();
-            //Toast.makeText(this, "Current token ["+token+"]",
-            //        Toast.LENGTH_LONG).show();
-        }
-        catch (Exception ex)
-        {
-            String s = ex.getMessage();
-        }
 
         // initialisation d'une progress bar
         progressDialog = new ProgressDialog(this);
@@ -188,57 +200,10 @@ public class Login extends Activity
         ad.show();
     }
 
-    void ShowToastToken()
+    void ShowToast(String message)
     {
-        Toast.makeText(this, "Current token ["+_tokenFire+"]", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Current ["+message+"]", Toast.LENGTH_LONG).show();
     }
-
-    class UpdateToken extends AsyncTask<String, String, String>
-   {
-       @Override
-       protected void onPreExecute() {
-           super.onPreExecute();
-       }
-
-       @Override
-       protected void onPostExecute(String s) {
-           progressDialog.dismiss();
-
-           ShowToastToken();
-       }
-
-       @Override
-       protected String doInBackground(String... strings) {
-           // Building Parameters
-
-           UserClass cu = DonneeAppl.GetInstance().CurrentUser;
-
-           List<NameValuePair> params = new ArrayList<NameValuePair>();
-           params.add(new BasicNameValuePair("id", Integer.toString( cu.Id ) ));
-           params.add(new BasicNameValuePair("tokenFirebase", cu.FirebaseToken ));
-           params.add(new BasicNameValuePair("token", cu.Token ));
-           // getting JSON string from URL
-           JSONObject json = jParser.makeHttpRequest("http://www.tpbl.ch/service/token.php", "POST", params);
-
-           // Check your log cat for JSON reponse
-           Log.d("Login : ", json.toString());
-
-           try {
-               // Checking for SUCCESS TAG
-               int success = json.getInt(TAG_RESULT);
-
-               if (success == 1) {
-               }
-               else {
-                   return null;
-               }
-           } catch (JSONException e) {
-               e.printStackTrace();
-           }
-
-           return "";
-       }
-   }
 
 
    class CheckLogin extends AsyncTask<String, String, UserClass>
@@ -252,9 +217,8 @@ public class Login extends Activity
        protected void onPostExecute(UserClass s) {
            progressDialog.dismiss();
 
-           DonneeAppl.GetInstance().CurrentUser = new UserClass( s.Name, s.Id );
-
            if( s != null ) {
+
                Intent ii = new Intent(getApplicationContext(), OutingActivity.class);
                ii.putExtra("user", s);
                ii.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -294,6 +258,9 @@ public class Login extends Activity
                        String name = c.getString(TAG_NOM);
 
                       u = new UserClass( name, id );
+
+                       DonneeAppl.GetInstance().CurrentUser = new UserClass( u.Name, u.Id );
+                       GetToken();
                    }
                }
                else {
