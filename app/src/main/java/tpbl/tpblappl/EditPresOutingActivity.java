@@ -18,6 +18,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.*;
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -27,6 +29,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.opengl.Visibility;
@@ -35,6 +38,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -75,6 +80,9 @@ import android.app.AlertDialog;
 public class EditPresOutingActivity extends Activity{
 
     public final static String ID_DEFAULT_CALENDAR = "Default calendar id";
+    public final static int MY_PERMISSION_CALENDAR = 123;
+
+    boolean _haveRightCalendar = false;
 
     private ProgressDialog pDialog;
     JSONParser jParser = new JSONParser();
@@ -86,6 +94,34 @@ public class EditPresOutingActivity extends Activity{
     OutingClass _outing;
 
     CalendarClass _calendars[];
+
+    void CheckIfCalendarPermissions()
+    {
+        _haveRightCalendar = false;
+
+        try {
+            int perm = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_CALENDAR);
+
+            if (perm == PackageManager.PERMISSION_GRANTED)
+                _haveRightCalendar = true;
+            else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_CALENDAR}, MY_PERMISSION_CALENDAR);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.d("Check perm calendar ", ex.getMessage() );
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if( requestCode == MY_PERMISSION_CALENDAR )
+        {
+            if( grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED )
+                _haveRightCalendar = true;
+        }
+    }
 
     void SetDefaultId(int id)
     {
@@ -109,7 +145,11 @@ public class EditPresOutingActivity extends Activity{
 
     String[] GetEvents(Date date ){
 
+        if( !_haveRightCalendar )
+            return new String[0];
+
         String[] outings = null;
+
         List<String> listOut = new ArrayList<String>();
 
         try {
@@ -282,10 +322,13 @@ public class EditPresOutingActivity extends Activity{
 
     void AskAddCalendar()
     {
-        boolean exist = EventsExist();
-        if( !exist ) {
-            UpdateListCalendars();
-            showDialog(0);
+        if( _haveRightCalendar ) {
+            boolean exist = EventsExist();
+            if (!exist) {
+                UpdateListCalendars();
+                showDialog(0);
+            } else
+                new UpdatePresOuting().execute();
         }
         else
             new UpdatePresOuting().execute();
@@ -404,7 +447,7 @@ public class EditPresOutingActivity extends Activity{
 
         _outing = DonneeAppl.GetInstance().ListOuting.get(posList);
 
-        String[] arrayOutings = GetEvents(_outing.OutingDate);
+        CheckIfCalendarPermissions();
 
         TextView tv_Id = (TextView) findViewById(R.id.TV_Id);
 
@@ -437,14 +480,18 @@ public class EditPresOutingActivity extends Activity{
         ListView lv_events = (ListView) findViewById( R.id.LV_Events );
         List<String> list_outing = new ArrayList<String>();
 
-        if( arrayOutings.length > 0 ) {
-            for (String out : arrayOutings) {
-                list_outing.add(out);
+        if( _haveRightCalendar ) {
+            String[] arrayOutings = GetEvents(_outing.OutingDate);
+            if (arrayOutings.length > 0) {
+                for (String out : arrayOutings) {
+                    list_outing.add(out);
+                }
+            } else {
+                list_outing.add("LIBRE");
             }
         }
-        else {
-            list_outing.add("LIBRE");
-        }
+        else
+            list_outing.add("Pas la permission de lire le calendrier");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list_outing);
         lv_events.setAdapter(adapter);
