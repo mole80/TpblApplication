@@ -37,7 +37,27 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         RemoteMessage.Notification not =  remoteMessage.getNotification();
         // Check if message contains a notification payload.
         if ( not != null) {
-//            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+         // AAFICHE une notification
+
+           // Intent intent = new Intent(this, Login.class);
+           // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+           // PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+           //         PendingIntent.FLAG_ONE_SHOT);
+
+       //     Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle(not.getTitle())
+                    .setContentText(not.getBody())
+                    .setAutoCancel(true);
+                    //.setSound(defaultSoundUri)
+                    //.setContentIntent(pendingIntent);
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            notificationManager.notify(0, notificationBuilder.build());
         }
 
 //        super.onMessageReceived(remoteMessage);

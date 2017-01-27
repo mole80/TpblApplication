@@ -47,6 +47,20 @@ public class  OutingActivity extends ListActivity {
     private UserClass _user;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        new LoadAllOuting().execute();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+//       finish();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_products);
@@ -58,7 +72,7 @@ public class  OutingActivity extends ListActivity {
         _outingsHashList = new ArrayList<HashMap<String, String>>();
 
         // Loading products in Background Thread
-        new LoadAllOuting().execute();
+//        new LoadAllOuting().execute();
 
         // Get listview
         ListView lv = getListView();

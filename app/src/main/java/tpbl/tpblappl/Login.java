@@ -125,6 +125,16 @@ public class Login extends Activity
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int a = 0;
+    }
+
+    @Override
+
+
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -156,8 +166,8 @@ public class Login extends Activity
                 if (usersize > 0 && passsize > 0)
                 {
                     progressDialog.show();
-                    String user = UserEditText.getText().toString();
-                    String pass = PassEditText.getText().toString();
+                    String user = UserEditText.getText().toString().trim();
+                    String pass = PassEditText.getText().toString().trim();
 
                     _user = user;
                     _pass = UserClass.ConvertMd5(pass);
@@ -260,7 +270,7 @@ public class Login extends Activity
                       u = new UserClass( name, id );
 
                        DonneeAppl.GetInstance().CurrentUser = new UserClass( u.Name, u.Id );
-                       GetToken();
+                       //GetToken();
                    }
                }
                else {

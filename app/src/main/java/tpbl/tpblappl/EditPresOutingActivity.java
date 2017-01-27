@@ -115,6 +115,13 @@ public class EditPresOutingActivity extends Activity{
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        EndOfTask();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if( requestCode == MY_PERMISSION_CALENDAR )
         {
