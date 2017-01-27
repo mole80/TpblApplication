@@ -98,6 +98,7 @@ public class Login extends Activity
        return pref.getString(OLD_USER_NAME, "");
     }
 
+    //TODO : Create a method to send token and not duplicate code with login
     void GetToken()
     {
         try
@@ -116,6 +117,7 @@ public class Login extends Activity
 
            if( json != null )
                 Log.d("Token : ", json.toString());
+
 
 //           int success = json.getInt("result");
         }
@@ -229,6 +231,15 @@ public class Login extends Activity
 
            if( s != null ) {
 
+            //Show message only for owner
+            if( DonneeAppl.GetInstance().TokenMustBeUpdated )
+            {
+                DonneeAppl.GetInstance().TokenMustBeUpdated = false;
+                //Show message only for owner
+                if( s.Id == 1 )
+                    ShowToast("Token updated");
+            }
+
                Intent ii = new Intent(getApplicationContext(), OutingActivity.class);
                ii.putExtra("user", s);
                ii.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -270,7 +281,9 @@ public class Login extends Activity
                       u = new UserClass( name, id );
 
                        DonneeAppl.GetInstance().CurrentUser = new UserClass( u.Name, u.Id );
-                       //GetToken();
+
+                       if( DonneeAppl.GetInstance().TokenMustBeUpdated )
+                            GetToken();
                    }
                }
                else {

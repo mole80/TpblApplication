@@ -6,6 +6,7 @@ public class DonneeAppl {
 
     public ArrayList<OutingClass> ListOuting = new ArrayList<>();
     public UserClass CurrentUser = null;
+    public boolean TokenMustBeUpdated = false;
 
     private DonneeAppl()
     {}
